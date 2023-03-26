@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stopwatch</title>
+    <style>
+      .stopwatch {
+        text-align: center;
+        font-size: 2em;
+        padding: 1em;
+        background-color: #eee;
+        border-radius: 5px;
+        margin: 1em auto;
+        max-width: 500px;
+        box-shadow: 0 0 5px #ccc;
+      }
+
+      .stopwatch .time {
+        font-size: 3em;
+        margin: 0.5em 0;
+        font-family: monospace;
+      }
+
+      .stopwatch button {
+        font-size: 1em;
+        margin: 0.5em;
+        padding: 0.5em;
+        border-radius: 5px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        .stopwatch .time {
+          font-size: 2em;
+        }
+
+        .stopwatch button {
+          font-size: 0.8em;
+          padding: 0.3em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stopwatch">
+      <div class="time">00:00:00</div>
+      <button id="start">Start</button>
+      <button id="stop">Stop</button>
+      <button id="reset">Reset</button>
+    </div>
+
+    <script>
+      let startTime,
+        elapsedTime = 0,
+        intervalId;
+
+      function startTimer() {
+        startTime = Date.now() - elapsedTime;
+        intervalId = setInterval(() => {
+          elapsedTime = Date.now() - startTime;
+          updateTime(elapsedTime);
+        }, 10);
+      }
+
+      function stopTimer() {
+        clearInterval(intervalId);
+      }
+
+      function resetTimer() {
+        stopTimer();
+        elapsedTime = 0;
+        updateTime(elapsedTime);
+      }
+
+      function updateTime(time) {
+        const minutes = Math.floor(time / 60000);
+        const seconds = Math.floor((time % 60000) / 1000);
+        const milliseconds = Math.floor((time % 1000) / 10);
+
+        const formattedTime = [
+          minutes.toString().padStart(2, "0"),
+          seconds.toString().padStart(2, "0"),
+          milliseconds.toString().padStart(2, "0"),
+        ].join(":");
+
+        document.querySelector(".time").textContent = formattedTime;
+      }
+
+      document.querySelector("#start").addEventListener("click", startTimer);
+      document.querySelector("#stop").addEventListener("click", stopTimer);
+      document.querySelector("#reset").addEventListener("click", resetTimer);
+    </script>
+  </body>
+</html>

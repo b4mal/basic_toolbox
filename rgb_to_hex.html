@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RGB to HEX Converter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      /* Color picker styles */
+      .color-picker {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+      }
+
+      .color-picker label {
+        margin-right: 10px;
+        font-size: 18px;
+      }
+
+      .color-picker input[type="range"] {
+        width: 200px;
+        margin: 0 10px;
+      }
+
+      .color-picker input[type="text"] {
+        width: 80px;
+        margin-right: 10px;
+        font-size: 18px;
+      }
+
+      /* Converter styles */
+      .converter {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+      }
+
+      .converter label {
+        margin-right: 10px;
+        font-size: 18px;
+      }
+
+      .converter input[type="text"] {
+        width: 80px;
+        margin-right: 10px;
+        font-size: 18px;
+      }
+
+      .converter button {
+        background-color: #f2f2f2;
+        color: black;
+        border: 2px solid #e7e7e7;
+        padding: 10px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 18px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+        transition-duration: 0.4s;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+
+      .converter button:hover {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      /* Responsive layout styles */
+      @media only screen and (max-width: 600px) {
+        .color-picker {
+          flex-direction: column;
+        }
+
+        .converter {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="color-picker">
+      <label for="red">Red:</label>
+      <input type="range" id="red" min="0" max="255" value="0" />
+      <input type="text" id="red-value" value="0" />
+
+      <label for="green">Green:</label>
+      <input type="range" id="green" min="0" max="255" value="0" />
+      <input type="text" id="green-value" value="0" />
+
+      <label for="blue">Blue:</label>
+      <input type="range" id="blue" min="0" max="255" value="0" />
+      <input type="text" id="blue-value" value="0" />
+
+      <div
+        style="
+          background-color: rgb(0, 0, 0);
+          width: 50px;
+          height: 50px;
+          margin-left: 10px;
+        "
+      ></div>
+    </div>
+
+    <div class="converter">
+      <label for="hex">HEX:</label>
+      <input type="text" id="hex" value="#000000" readonly />
+
+      <button id="convert">Convert</button>
+    </div>
+    <script>
+      // Function to convert RGB to HEX
+      function rgbToHex(r, g, b) {
+        return (
+          "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+        );
+      }
+
+      // Function to update the color preview box
+      function updateColorPreview(r, g, b) {
+        const colorPreview = document.querySelector(".color-picker div");
+        colorPreview.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+      }
+
+      // Event listeners for the color picker inputs
+      const redInput = document.getElementById("red");
+      const greenInput = document.getElementById("green");
+      const blueInput = document.getElementById("blue");
+
+      redInput.addEventListener("input", () => {
+        document.getElementById("red-value").value = redInput.value;
+        updateColorPreview(redInput.value, greenInput.value, blueInput.value);
+      });
+
+      greenInput.addEventListener("input", () => {
+        document.getElementById("green-value").value = greenInput.value;
+        updateColorPreview(redInput.value, greenInput.value, blueInput.value);
+      });
+
+      blueInput.addEventListener("input", () => {
+        document.getElementById("blue-value").value = blueInput.value;
+        updateColorPreview(redInput.value, greenInput.value, blueInput.value);
+      });
+
+      // Event listener for the convert button
+      const convertButton = document.getElementById("convert");
+      convertButton.addEventListener("click", () => {
+        const hexValue = rgbToHex(
+          redInput.value,
+          greenInput.value,
+          blueInput.value
+        );
+        document.getElementById("hex").value = hexValue;
+      });
+
+      // Initialize the color preview box
+      updateColorPreview(redInput.value, greenInput.value, blueInput.value);
+    </script>
+  </body>
+</html>
